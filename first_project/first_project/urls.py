@@ -24,5 +24,6 @@ urlpatterns = [
     # обрабатывались Django
     path('current_time/', include('app.urls')),
     path('workdir/', include('app.urls')),
+    path('<str:dish>/', include('app.urls')),
     path('admin/', admin.site.urls),
 ]
