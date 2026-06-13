@@ -34,16 +34,16 @@ class Command(BaseCommand):
                 # Создаём объект модели и сохраняем в БД
                 phone = Phone(
                     name=name,
-            price=price,
-            image=image,
-            release_date=release_date,
-            lte_exists=lte_exists,
-            slug=slug
-        )
+                    price=price,
+                    image=image,
+                    release_date=release_date,
+                    lte_exists=lte_exists,
+                    slug=slug
+                )
                 phone.save()
                 imported_count += 1
 
         # Выводим итоговое сообщение
         self.stdout.write(
-            self.style.SUCCESS(f'Успешно импортировано {imported_count} телефонов')
+        self.style.SUCCESS(f'Успешно импортировано {imported_count} телефонов')
         )
