@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Каталог{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="header">
+        <h1><a href="/catalog">Каталог</a></h1>
+    </div>
+
+    <div class="sort-block">
+        <form method="get">
+            <label for="sort">Сортировка:</label>
+            <select name="sort" id="sort" onchange="this.form.submit()">
+                <option value="name" {% if current_sort == 'name' %}selected{% endif %}>По названию</option>
+                <option value="min_price" {% if current_sort == 'min_price' %}selected{% endif %}>По возрастанию цены</option>
+                <option value="max_price" {% if current_sort == 'max_price' %}selected{% endif %}>По убыванию цены</option>
+            </select>
+        </form>
+    </div>
+
+    <div class="content">
+        {% for phone in phones %}
+        <div class="phone-item">
+            <h3><a>{{ phone.name }}</a></h3>
+            <p>Цена: {{ phone.price }} руб.</p>
+            {% if phone.image %}
+                <img src="{{ phone.image }}" alt="{{ phone.name }}" style="max-width: 200px;">
+            {% endif %}
+            <p>Дата выпуска: {{ phone.release_date }}</p>
+            <p>Поддержка LTE: {% if phone.lte_exists %}Да{% else %}Нет{% endif %}</p>
+        </div>
+        <hr>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
