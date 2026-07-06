@@ -20,10 +20,5 @@ from django.urls import path,include
 
 urlpatterns = [
     path('', include('app.urls')),
-    # Раскомментируйте код, чтобы данные урлы 
-    # обрабатывались Django
-    path('current_time/', include('app.urls')),
-    path('workdir/', include('app.urls')),
-    path('<str:dish>/', include('app.urls')),
     path('admin/', admin.site.urls),
 ]
