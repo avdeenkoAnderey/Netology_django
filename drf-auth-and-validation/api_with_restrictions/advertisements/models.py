@@ -1,23 +1,28 @@
 from django.conf import settings
 from django.db import models
-from django.contrib.auth.models import User
+
+
+class AdvertisementStatusChoices(models.TextChoices):
+    OPEN = "OPEN", "Открыто"
+    CLOSED = "CLOSED", "Закрыто"
+
 
 class Advertisement(models.Model):
-    STATUS_CHOICES = [
-        ('OPEN', 'Открыто'),
-        ('CLOSED', 'Закрыто'),
-    ]
+    """Объявление."""
 
-    title = models.CharField(max_length=200)
-    description = models.TextField()
-    status = models.CharField(
-        max_length=10,
-        choices=STATUS_CHOICES,
-        default='OPEN',
+    title = models.TextField()
+    description = models.TextField(default='')
+    status = models.TextField(
+        choices=AdvertisementStatusChoices.choices,
+        default=AdvertisementStatusChoices.OPEN
+    )
+    creator = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='advertisements',
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='advertisements')
 
-    def __str__(self):
-        return self.title
+    class Meta:
+        ordering = ['-created_at']

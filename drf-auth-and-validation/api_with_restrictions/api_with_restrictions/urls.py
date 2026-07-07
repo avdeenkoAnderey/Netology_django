@@ -22,7 +22,7 @@ router = DefaultRouter()
 router.register(r'advertisements', AdvertisementViewSet, basename='advertisement')
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
 ]
 

@@ -1,14 +1,13 @@
-import django_filters
-
+from django_filters import rest_framework as filters
 from advertisements.models import Advertisement
 
 
-class AdvertisementFilter(django_filters.FilterSet):
-    """Фильтры для объявлений."""
-
-    created_at = django_filters.DateFromToRangeFilter(field_name='created_at')
-    status = django_filters.ChoiceFilter(choices=Advertisement.STATUS_CHOICES)
+class AdvertisementFilter(filters.FilterSet):
+    status = filters.ChoiceFilter(choices=Advertisement.status.field.choices)
+    created_after = filters.DateFilter(field_name='created_at', lookup_expr='gte')
+    created_before = filters.DateFilter(field_name='created_at', lookup_expr='lte')
+    creator = filters.NumberFilter(field_name='creator', lookup_expr='exact')
 
     class Meta:
         model = Advertisement
-        fields = ['status', 'created_at']
+        fields = ('status', 'created_after', 'created_before','creator')
