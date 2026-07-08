@@ -26,3 +26,4 @@ class Advertisement(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+        related_name = 'advertisements'
