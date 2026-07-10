@@ -1,14 +1,14 @@
 # примеры API-запросов
 
 # получение объявлений
-GET http://127.0.0.1:8000/api/advertisements/
+GET http://127.0.0.1:8000/advertisement/
 Content-Type: application/json
 
 ###
 # создание объявления
-POST http://127.0.0.1:8000/api/advertisements/
+POST http://127.0.0.1:8000/advertisement/
 Content-Type: application/json
-Authorization: Token 34b22029941f030fe932f3a35714d6679c516ea4
+Authorization: Token 4072c5298506d563f236ba5b9b4397d707d6a41d
 
 {
   "title": "Шкаф IKEA",
@@ -18,9 +18,9 @@ Authorization: Token 34b22029941f030fe932f3a35714d6679c516ea4
 ###
 
 # попытка поменять объявление
-PATCH http://127.0.0.1:8000/api/advertisements/4/
+PATCH http://127.0.0.1:8000/advertisement/3/
 Content-Type: application/json
-Authorization: Token 34b22029941f030fe932f3a35714d6679c516ea4
+Authorization: Token 4072c5298506d563f236ba5b9b4397d707d6a41d
 
 {
   "status": "CLOSED"
@@ -29,13 +29,13 @@ Authorization: Token 34b22029941f030fe932f3a35714d6679c516ea4
 ###
 
 # фильтрация по создателю
-GET http://127.0.0.1:8000/api/advertisements/?creator=3
+GET http://127.0.0.1:8000/advertisement/?creator=2
 Content-Type: application/json
 
 ###
 
 # фильтрация по дате
-GET http://127.0.0.1:8000/api/advertisements/?created_after=2026-07-30
+GET http://127.0.0.1:8000/advertisement/?created_at_after=2026-07-10
 Content-Type: application/json
 
 ###

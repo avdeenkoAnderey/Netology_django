@@ -1,13 +1,13 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-
-from advertisements.models import Advertisement, AdvertisementStatusChoices
+from .models import Advertisement, AdvertisementStatusChoices
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name')
+        fields = ('id', 'username','first_name','last_name')
+
 
 
 class AdvertisementSerializer(serializers.ModelSerializer):
@@ -16,26 +16,25 @@ class AdvertisementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Advertisement
         fields = ('id', 'title', 'description', 'creator', 'status', 'created_at')
-
+    
     def create(self, validated_data):
-        validated_data["creator"] = self.context["request"].user
+        validated_data['creator'] = self.context['request'].user
         return super().create(validated_data)
-
+    
     def validate(self, data):
         request = self.context.get('request')
         if not request or not hasattr(request, 'user') or not request.user.is_authenticated:
             return data
-
+        
         user = request.user
-        open_count = user.advertisements.filter(
+
+        open_count = Advertisement.objects.filter(
+            creator=user,
             status=AdvertisementStatusChoices.OPEN
         ).count()
 
-        # Если сейчас создаём новое, то после создания будет open_count + 1
-        if open_count >= 10:
+        if open_count >=10:
             raise serializers.ValidationError(
-                "У пользователя не может быть больше 10 открытых объявлений."
+                'У пользователя не может быть больше 10 открытых объявлений'
             )
-
         return data
-

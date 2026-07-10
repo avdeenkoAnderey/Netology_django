@@ -1,24 +1,13 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
 
-from .models import Advertisement
-from .serializers import AdvertisementSerializer
-from .filters import AdvertisementFilter
-
-
-class IsCreatorPermission:
-    """Разрешение: только автор может обновлять/удалять свой объект."""
-
-    def has_permission(self, request, view):
-        if request.method in ['GET', 'HEAD', 'OPTIONS']:
-            return True
-        return request.user and request.user.is_authenticated
-
-    def has_object_permission(self, request, view, obj):
-        if request.method in ['GET', 'HEAD', 'OPTIONS']:
-            return True
-        return obj.creator == request.user
+from advertisements.models import Advertisement
+from advertisements.serializers import AdvertisementSerializer
+from advertisements.filters import AdvertisementFilter
+from advertisements.throttling import Anon10PerMinute, User20PerMinute
 
 
 class AdvertisementViewSet(ModelViewSet):
@@ -26,12 +15,12 @@ class AdvertisementViewSet(ModelViewSet):
     serializer_class = AdvertisementSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = AdvertisementFilter
+    throttle_classes = [Anon10PerMinute, User20PerMinute]
 
     def get_permissions(self):
-        """Получение прав для действий."""
-        if self.action == "create":
+        if self.action in ["create", "update", "partial_update"]:
             return [IsAuthenticated()]
-        if self.action in ["update", "partial_update", "destroy"]:
-            return [IsAuthenticated(), IsCreatorPermission()]
         return []
 
+    def perform_destroy(self, instance):
+        instance.delete()

@@ -1,9 +1,10 @@
-from rest_framework.throttling import SimpleRateThrottle
+from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
 
-class AnonRateThrottle(SimpleRateThrottle):
-    scope = 'anon'
-    rate = '10/min'
 
-class UserRateThrottle(SimpleRateThrottle):
-    scope = 'user'
-    rate = '20/min'
+class Anon10PerMinute(AnonRateThrottle):
+    rate = "10/min"
+
+
+class User20PerMinute(UserRateThrottle):
+    rate = "20/min"
+

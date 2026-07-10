@@ -1,12 +1,10 @@
-from rest_framework import permissions
+from rest_framework.permissions import BasePermission
 
-class IsAuthorOrReadOnly(permissions.BasePermission):
-    """
-    Разрешение на редактирование объекта только его автору.
-    """
+class IsCreatorOrReadOnly(BasePermission):
 
     def has_object_permission(self, request, view, obj):
-        if request.method in permissions.SAFE_METHODS:
+        if request.method in ['GET', 'HEAD', 'OPTIONS']:
             return True
 
-        return obj.author == request.user
+        # Для остальных методов (PUT/PATCH/DELETE) проверяем, что пользователь — автор
+        return obj.creator == request.user

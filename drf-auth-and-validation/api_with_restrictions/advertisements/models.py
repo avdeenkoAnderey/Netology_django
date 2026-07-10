@@ -19,11 +19,11 @@ class Advertisement(models.Model):
     creator = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='advertisements',
+        related_name='advertisement',
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['-created_at']
-        related_name = 'advertisements'
+        db_table = 'advertisement'

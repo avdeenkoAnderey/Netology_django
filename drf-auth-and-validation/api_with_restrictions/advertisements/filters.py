@@ -3,11 +3,20 @@ from advertisements.models import Advertisement
 
 
 class AdvertisementFilter(filters.FilterSet):
-    status = filters.ChoiceFilter(choices=Advertisement.status.field.choices)
-    created_after = filters.DateFilter(field_name='created_at', lookup_expr='gte')
-    created_before = filters.DateFilter(field_name='created_at', lookup_expr='lte')
-    creator = filters.NumberFilter(field_name='creator', lookup_expr='exact')
+    status = filters.ChoiceFilter(
+        choices=Advertisement.status.field.choices,
+        label="Статус"
+    )
+
+    created_at = filters.DateFromToRangeFilter(
+        field_name='created_at',
+        label='Дата создания'
+    )
+
+    creator = filters.NumberFilter(
+        field_name='creator',
+
+    )
 
     class Meta:
-        model = Advertisement
-        fields = ('status', 'created_after', 'created_before','creator')
+        field = ['status', 'created_at']
